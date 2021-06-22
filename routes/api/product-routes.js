@@ -29,17 +29,21 @@ router.get('/:id', async(req, res) => {
 
 // create new product
 router.post('/', async(req, res) => {
-  /* req.body should look like this...
+  /* req.body should look like this in Postman
     {
       product_name: "Basketball",
       price: 200.00,
       stock: 3,
-      tagIds: [1, 2, 3, 4]
+      tagIds[0]: 1,
+      tagIds[1]: 2,
+      tagIds[2]: 3,
+      tagIds[3]: 4,
     }
   */
   Product.create(req.body)
     .then(async(product) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
+      // let ids = await req.body.tagIds
       if (req.body.tagIds.length) {
         const productTagIdArr = await req.body.tagIds.map((tag_id) => {
           return {
